@@ -13,7 +13,7 @@ class Counter extends Component {
   }
 
   handleDelete = () => {
-    console.log("Event Handler Called");
+    this.setState({ count: 0 });
     }
 
   render() {
