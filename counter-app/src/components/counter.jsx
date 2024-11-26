@@ -12,6 +12,10 @@ class Counter extends Component {
     this.setState({ count: this.state.count - 1 });
   }
 
+  handleDelete = () => {
+    console.log("Event Handler Called");
+    }
+
   render() {
     return (
       <div>
@@ -23,7 +27,7 @@ class Counter extends Component {
           Increment
         </button>
         <button onClick={this.handleDecrement} className="btn btn-secondary btn-sm m-2">Decrement</button>
-        <button className="btn btn-danger btn-sm m-2">Delete</button>
+        <button onClick={this.handleDelete} className="btn btn-danger btn-sm m-2">Delete</button>
       </div>
     );
   }
