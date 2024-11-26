@@ -1,8 +1,8 @@
+import React, { Component } from "react";
 import logo from "./logo.svg";
 import NavBar from "./components/navbar";
 import Counters from "./components/counters";
 import "./App.css";
-
 
 class App extends Component {
   state = {
@@ -19,7 +19,7 @@ class App extends Component {
     const index = counters.indexOf(counter);
     counters[index] = { ...counter };
     counters[index].value++;
-    this.setState({ counters });
+    this.setState(() => ({ counters }));
   };
 
   handleDecrement = (counter) => {
@@ -29,7 +29,7 @@ class App extends Component {
     counters[index].value--;
     this.setState({ counters });
   };
-  
+
   handleReset = () => {
     const counters = this.state.counters.map((c) => {
       c.value = 0;
@@ -46,7 +46,9 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <NavBar totalCounters={this.state.counters.filter((c) => c.value > 0).length} />
+        <NavBar
+          totalCounters={this.state.counters.filter((c) => c.value > 0).length}
+        />
         <main className="container">
           <Counters
             counters={this.state.counters}
@@ -58,7 +60,7 @@ class App extends Component {
         </main>
       </React.Fragment>
     );
-  } 
+  }
 }
 
 export default App;
