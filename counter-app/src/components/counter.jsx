@@ -22,7 +22,7 @@ class Counter extends Component {
         >
           Increment
         </button>
-        <button className="btn btn-secondary btn-sm m-2">Decrement</button>
+        <button onClick={this.handleDecrement} className="btn btn-secondary btn-sm m-2">Decrement</button>
         <button className="btn btn-danger btn-sm m-2">Delete</button>
       </div>
     );
