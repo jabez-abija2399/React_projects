@@ -12,13 +12,13 @@ class Counters extends Component {
           {" "}
           Reset
         </button>
-        {this.state.counters.map((counter) => (
+        {this.props.counters.map((counter) => (
           <Counter
+            counter={counter}
             key={counter.id}
             onDelete={this.props.onDelete}
             onIncrement={this.props.onIncrement}
             onDecrement={this.props.onDecrement}
-            counter={this.props.counter}
           />
         ))}
       </div>
