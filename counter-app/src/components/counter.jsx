@@ -4,7 +4,7 @@ class Counter extends Component {
     state = { 
         count: 1
      } 
-     handleIncrement(){ 
+     handleIncrement = () =>{ 
             console.log('Increment Clicked', this)
         }   
 
