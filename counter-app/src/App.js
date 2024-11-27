@@ -25,6 +25,9 @@ class App extends Component {
   handleDecrement = (counter) => {
     const counters = [...this.state.counters];
     const index = counters.indexOf(counter);
+
+    if (counters[index].value === 0) return null; // Prevent decrementing below 0 value of counter
+
     counters[index] = { ...counter };
     counters[index].value--;
     this.setState({ counters });
