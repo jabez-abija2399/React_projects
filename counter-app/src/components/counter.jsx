@@ -18,6 +18,7 @@ class Counter extends Component { // Define Counter class component
           <button
             onClick={() => this.props.onDecrement(this.props.counter)} // Decrement button with onClick event
             className="btn btn-secondary btn-sm m-2" // Bootstrap button classes with margin
+            disabled={this.props.counter.value === 0} // Disable button if counter value is 0 
           >
             -
           </button>
