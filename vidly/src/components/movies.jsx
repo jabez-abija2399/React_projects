@@ -8,6 +8,7 @@ class Movies extends Component {
   state = {
     // state object with a single property called movies
     movies: getMovies(), // movies property is initialized with the result of getMovies()
+    currentPage: 1, // currentPage property is initialized with the value 1
     pagesize: 4, // pagesize property is initialized with the value 4
   }; // state object
 
@@ -17,17 +18,19 @@ class Movies extends Component {
     this.setState({ movies }); // update the state object
   };
 
-    handleLike = (movie) => {   // handleLike method
+  handleLike = (movie) => {
+    // handleLike method
     const movies = [...this.state.movies]; // clone the movies array
     const index = movies.indexOf(movie); // find the index of the movie object that was passed as an argument
     movies[index] = { ...movies[index] }; // clone the movie object at the specified index
-    movies[index].liked = !movies[index].liked; // toggle the liked property of the cloned movie object 
+    movies[index].liked = !movies[index].liked; // toggle the liked property of the cloned movie object
     this.setState({ movies }); // update the state object
-    }
+  };
 
-    handlePageChange = page => {  // handlePageChange method
-      console.log(page); // log the page number to the console
-    }
+  handlePageChange = (page) => {
+    // handlePageChange method
+    console.log(page); // log the page number to the console
+  };
 
   render() {
     // render method
@@ -35,7 +38,7 @@ class Movies extends Component {
     if (count === 0) return <p>There are no movies in the database.</p>; // if the count property is 0, return a paragraph element with a message
 
     const { movies } = this.state; // extract movies from state
-
+    const { currentPage, pagesize } = this.state; // extract currentpage and pagesize from state
     return (
       // return statement
       <React.Fragment>
@@ -63,7 +66,10 @@ class Movies extends Component {
                   <td>{movie.numberInStock}</td>
                   <td>{movie.dailyRentalRate}</td>
                   <td>
-                    <Like liked = {movie.liked} onClick = {() => this.handleLike(movie)} />
+                    <Like
+                      liked={movie.liked}
+                      onClick={() => this.handleLike(movie)}
+                    />
                   </td>
                   <td>
                     <button
@@ -78,7 +84,12 @@ class Movies extends Component {
             )}
           </tbody>
         </table>
-        <Pagination itemsCount={count} pageSize={this.state.pagesize} onPageChange={this.handlePageChange} />
+        <Pagination
+          itemsCount={count}
+          pageSize={pagesize}
+          currentPage={currentPage}
+          onPageChange={this.handlePageChange}
+        />
       </React.Fragment>
     );
   }
