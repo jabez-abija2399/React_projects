@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
-import Like from "./like";
+import Like from "./comman/like";
+import Pagination from "./comman/pagination";
 
 class Movies extends Component {
   // class Movies extends Component
   state = {
     // state object with a single property called movies
     movies: getMovies(), // movies property is initialized with the result of getMovies()
+    pagesize: 4, // pagesize property is initialized with the value 4
   }; // state object
 
   handleDelete = (movie) => {
@@ -21,6 +23,10 @@ class Movies extends Component {
     movies[index] = { ...movies[index] }; // clone the movie object at the specified index
     movies[index].liked = !movies[index].liked; // toggle the liked property of the cloned movie object 
     this.setState({ movies }); // update the state object
+    }
+
+    handlePageChange = page => {  // handlePageChange method
+      console.log(page); // log the page number to the console
     }
 
   render() {
@@ -72,6 +78,7 @@ class Movies extends Component {
             )}
           </tbody>
         </table>
+        <Pagination itemsCount={count} pageSize={this.state.pagesize} onPageChange={this.handlePageChange} />
       </React.Fragment>
     );
   }
