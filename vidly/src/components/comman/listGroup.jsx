@@ -15,10 +15,10 @@ const ListGroup = (props) => {
     );
 }
 
-ListGroup.defaultProps = {
-    textProperty: 'name',  // default value for textProperty prop
-    valueProperty: '_id'  // default value for valueProperty prop
-}
+// ListGroup.defaultProps = {
+//     textProperty: 'name',  // default value for textProperty prop
+//     valueProperty: '_id'  // default value for valueProperty prop
+// }
 
 export default ListGroup; // export the ListGroup component
 
