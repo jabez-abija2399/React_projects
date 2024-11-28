@@ -49,9 +49,10 @@ class Movies extends Component {
     this.setState({ selectedGenre: genre, currentPage: 1 }); // update the selectedGenre and currentPage properties of the state object
   };
 
-  handleSort = (path) => {
+  handleSort = (sortColumn) => {
     // handleSort method
-    this.setState({ sortColumn: { path, order: "asc" } }); // update the sortColumn property of the state object
+    
+    this.setState({ sortColumn }); // update the sortColumn property of the state object
   };
 
   render() {
@@ -83,6 +84,7 @@ class Movies extends Component {
           <p>Showing {filtered.length} movies in the database.</p>
           <MoviesTable // MoviesTable component with movies, onDelete, and onLike props
             movies={paginatedMovies}
+            sortColumn={sortColumn}
             onDelete={this.handleDelete}
             onLike={this.handleLike}
             onSort={this.handleSort}
