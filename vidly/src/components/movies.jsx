@@ -3,15 +3,24 @@ import { getMovies } from "../services/fakeMovieService";
 import Like from "./comman/like";
 import Pagination from "./comman/pagination";
 import { paginate } from "../utils/paginate";
+import { getGenres } from "../services/fakeGenreService";
+import ListGroup from "./comman/listGroup";
 
 class Movies extends Component {
   // class Movies extends Component
   state = {
     // state object with a single property called movies
-    movies: getMovies(), // movies property is initialized with the result of getMovies()
+    movies: [], // movies property is initialized with an empty array
+    genres: [], // genres property is initialized with an empty array
     currentPage: 1, // currentPage property is initialized with the value 1
     pagesize: 4, // pagesize property is initialized with the value 4
   }; // state object
+
+  componentDidMount() {
+    // componentDidMount lifecycle hook
+    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()]; // create a new array of genres with an additional object at the beginning
+    this.setState({ movies: getMovies(), genres }); // update the state object with the movies and genres arrays
+  }
 
   handleDelete = (movie) => {
     // handleDelete method
@@ -30,7 +39,12 @@ class Movies extends Component {
 
   handlePageChange = (page) => {
     // handlePageChange method
-    this.setState({ currentPage: page }); // update the currentPage property of the state object 
+    this.setState({ currentPage: page }); // update the currentPage property of the state object
+  };
+
+  handleGenresSelect = (genre) => {
+    // handleGenresSelect method
+    this.setState({ selectedGenre: genre, currentPage: 1 }); // update the selectedGenre and currentPage properties of the state object
   };
 
   render() {
@@ -39,61 +53,72 @@ class Movies extends Component {
     if (count === 0) return <p>There are no movies in the database.</p>; // if the count property is 0, return a paragraph element with a message
 
     const { movies } = this.state; // extract movies from state
-    const { currentPage, pagesize } = this.state; // extract currentpage and pagesize from state
-    
+    const { currentPage, pagesize } = this.state; // extract currentPage and pagesize from state
+
     const paginatedMovies = paginate(movies, currentPage, pagesize); // paginate the movies array
     return (
       // return statement
-      <React.Fragment>
-        <p>Showing {count} movies in the database.</p>
+      <div className="row">
+        <div className="col-3">
+          <ListGroup // ListGroup component with items, textProperty, valueProperty, onItemSelect, and selectedItem props
+            items={this.state.genres}
+            textProperty="name"
+            valueProperty="_id"
+            onItemSelect={this.handleGenresSelect}
+            selectedItem={this.state.selectedGenre}
+          />
+        </div>
+        <div className="col">
+          <p>Showing {count} movies in the database.</p>
 
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Genre</th>
-              <th>Stock</th>
-              <th>Rate</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedMovies.map(
-              (
-                movie // map method to iterate over the movies array and return a table row element for each movie object in the array
-              ) => (
-                <tr key={movie._id}>
-                  <td>{movie.title}</td>
-                  <td>{movie.genre.name}</td>
-                  <td>{movie.numberInStock}</td>
-                  <td>{movie.dailyRentalRate}</td>
-                  <td>
-                    <Like
-                      liked={movie.liked}
-                      onClick={() => this.handleLike(movie)}
-                    />
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => this.handleDelete(movie)}
-                      className="btn btn-danger btn-sm"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              )
-            )}
-          </tbody>
-        </table>
-        <Pagination
-          itemsCount={count}
-          pageSize={pagesize}
-          currentPage={currentPage}
-          onPageChange={this.handlePageChange}
-        />
-      </React.Fragment>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Stock</th>
+                <th>Rate</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedMovies.map(
+                (
+                  movie // map method to iterate over the movies array and return a table row element for each movie object in the array
+                ) => (
+                  <tr key={movie._id}>
+                    <td>{movie.title}</td>
+                    <td>{movie.genre.name}</td>
+                    <td>{movie.numberInStock}</td>
+                    <td>{movie.dailyRentalRate}</td>
+                    <td>
+                      <Like
+                        liked={movie.liked}
+                        onClick={() => this.handleLike(movie)}
+                      />
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => this.handleDelete(movie)}
+                        className="btn btn-danger btn-sm"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+          <Pagination
+            itemsCount={count}
+            pageSize={pagesize}
+            currentPage={currentPage}
+            onPageChange={this.handlePageChange}
+          />
+        </div>
+      </div>
     );
   }
 }
