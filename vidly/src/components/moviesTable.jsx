@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-// import Like from "./common/like"; // Removed unused import
+import Like from "./comman/like";
 
 class MoviesTable extends Component {
     raiseSort = path => {
@@ -35,20 +35,19 @@ class MoviesTable extends Component {
             <td>{movie.genre.name}</td>
             <td>{movie.numberInStock}</td>
             <td>{movie.dailyRentalRate}</td>
+            
+            <td>
+                <Like
+                    liked={movie.liked}
+                    onClick={() => onLike(movie)}
+                />
+            </td>
             <td>
               <button
                 onClick={() => onDelete(movie)}
                 className="btn btn-danger btn-sm"
               >
                 Delete
-              </button>
-            </td>
-            <td>
-              <button
-                onClick={() => onLike(movie)}
-                className="btn btn-primary btn-sm"
-              >
-                Like
               </button>
             </td>
           </tr>
