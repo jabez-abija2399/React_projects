@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Like from "./comman/like";
 import Pagination from "./comman/pagination";
+import { paginate } from "../utils/paginate";
 
 class Movies extends Component {
   // class Movies extends Component
@@ -39,6 +40,8 @@ class Movies extends Component {
 
     const { movies } = this.state; // extract movies from state
     const { currentPage, pagesize } = this.state; // extract currentpage and pagesize from state
+    
+    const paginatedMovies = paginate(movies, currentPage, pagesize); // paginate the movies array
     return (
       // return statement
       <React.Fragment>
@@ -56,7 +59,7 @@ class Movies extends Component {
             </tr>
           </thead>
           <tbody>
-            {movies.map(
+            {paginatedMovies.map(
               (
                 movie // map method to iterate over the movies array and return a table row element for each movie object in the array
               ) => (
