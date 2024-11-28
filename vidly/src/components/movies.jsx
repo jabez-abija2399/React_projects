@@ -15,6 +15,14 @@ class Movies extends Component {
     this.setState({ movies }); // update the state object
   };
 
+    handleLike = (movie) => {   // handleLike method
+    const movies = [...this.state.movies]; // clone the movies array
+    const index = movies.indexOf(movie); // find the index of the movie object that was passed as an argument
+    movies[index] = { ...movies[index] }; // clone the movie object at the specified index
+    movies[index].liked = !movies[index].liked; // toggle the liked property of the cloned movie object 
+    this.setState({ movies }); // update the state object
+    }
+
   render() {
     // render method
     const { length: count } = this.state.movies; // object destructuring to extract the length property of the movies array and store it in a variable called count
@@ -35,6 +43,7 @@ class Movies extends Component {
               <th>Stock</th>
               <th>Rate</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -47,6 +56,9 @@ class Movies extends Component {
                   <td>{movie.genre.name}</td>
                   <td>{movie.numberInStock}</td>
                   <td>{movie.dailyRentalRate}</td>
+                  <td>
+                    <Like liked = {movie.liked} onClick = {() => this.handleLike(movie)} />
+                  </td>
                   <td>
                     <button
                       onClick={() => this.handleDelete(movie)}
