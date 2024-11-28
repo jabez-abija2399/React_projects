@@ -29,7 +29,7 @@ class Movies extends Component {
 
   handlePageChange = (page) => {
     // handlePageChange method
-    console.log(page); // log the page number to the console
+    this.setState({ currentPage: page }); // update the currentPage property of the state object 
   };
 
   render() {
