@@ -8,6 +8,12 @@ class Movies extends Component {
     // state object with a single property called movies
     movies: getMovies(), // movies property is initialized with the result of getMovies()
   }; // state object
+
+  handleDelete = (movie) => {   // handleDelete method
+    const movies = this.state.movies.filter((m) => m._id !== movie._id); // filter method to exclude the movie object that was passed as an argument
+    this.setState({ movies }); // update the state object
+  }
+
   render() {
     // render method
     const { movies } = this.state;
@@ -35,7 +41,7 @@ class Movies extends Component {
                 <td>{movie.numberInStock}</td>
                 <td>{movie.dailyRentalRate}</td>
                 <td>
-                  <button className="btn btn-danger btn-sm">Delete</button>     
+                  <button onClick={() => this.handleDelete(movie)} className="btn btn-danger btn-sm">Delete</button>     
                 </td>
               </tr>
             )
