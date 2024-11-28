@@ -9,36 +9,33 @@ class Movies extends Component {
   }; // state object
   render() {
     // render method
+    const { movies } = this.state;
+    if (movies.length === 0) return <p>There are no movies in the database.</p>;
     return (
       // return statement
       <table className="table">
-        {" "}
-        // table element with a class name of table
         <thead>
-          {" "}
-          // table head element
           <tr>
-            <th>Title</th> // table row element with table header elements
-            <th>Genre</th> // table row element with table header elements
-            <th>Stock</th> // table row element with table header elements
-            <th>Rate</th> // table row element with table header elements
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Stock</th>
+            <th>Rate</th>
+            <th></th>   
           </tr>
         </thead>
         <tbody>
-          {" "}
-          // table body element
-          {this.props.movies.map(
+          {movies.map(
             (
               movie // map method to iterate over the movies array and return a table row element for each movie object in the array
             ) => (
               <tr key={movie._id}>
-                {" "}
-                // table row element with a key attribute set to the movie's _id
-                property
-                <td>{movie.title}</td> // table data element
-                <td>{movie.genre.name}</td> // table data element
-                <td>{movie.numberInStock}</td> // table data element
+                <td>{movie.title}</td>
+                <td>{movie.genre.name}</td>
+                <td>{movie.numberInStock}</td>
                 <td>{movie.dailyRentalRate}</td>
+                <td>
+                  <button className="btn btn-danger btn-sm">Delete</button>     
+                </td>
               </tr>
             )
           )}

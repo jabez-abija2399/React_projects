@@ -1,7 +1,6 @@
-import logo from './logo.svg';
-import React, { Component } from 'react';
-import Movies from './components/movies';
-import './App.css';
+import React, { Component } from "react";
+import Movies from "./components/movies";
+import "./App.css";
 
 function App() {
   return (
