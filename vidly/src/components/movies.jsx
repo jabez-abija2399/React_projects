@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
-// Import Bootstrap CSS
+import Like from "./like";
 
 class Movies extends Component {
   // class Movies extends Component
