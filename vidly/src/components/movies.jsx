@@ -5,6 +5,7 @@ import Pagination from "./comman/pagination";
 import { paginate } from "../utils/paginate";
 import { getGenres } from "../services/fakeGenreService";
 import ListGroup from "./comman/listGroup";
+import _ from "lodash";
 
 class Movies extends Component {
   // class Movies extends Component
@@ -14,6 +15,7 @@ class Movies extends Component {
     genres: [], // genres property is initialized with an empty array
     currentPage: 1, // currentPage property is initialized with the value 1
     pagesize: 4, // pagesize property is initialized with the value 4
+    sortColumn: { path: "title", order: "asc" }, // sortColumn property is initialized with an object containing the path and order properties
   }; // state object
 
   componentDidMount() {
@@ -47,18 +49,26 @@ class Movies extends Component {
     this.setState({ selectedGenre: genre, currentPage: 1 }); // update the selectedGenre and currentPage properties of the state object
   };
 
+  handleSort = (path) => {
+    // handleSort method
+    this.setState({ sortColumn: { path, order: "asc" } }); // update the sortColumn property of the state object
+  };
+
   render() {
     // render method
     const { length: count } = this.state.movies; // object destructuring to extract the length property of the movies array and store it in a variable called count
     if (count === 0) return <p>There are no movies in the database.</p>; // if the count property is 0, return a paragraph element with a message
 
     const { movies } = this.state; // extract movies from state
-    const { currentPage, pagesize, selectedGenre } = this.state; // extract currentPage and pagesize from state
+    const { currentPage, pagesize, selectedGenre, sortColumn} = this.state; // extract currentPage and pagesize from state
     const filtered =
       selectedGenre && selectedGenre._id // filter the movies array based on the selected genre
         ? movies.filter((m) => m.genre._id === selectedGenre._id) // if a genre is selected, filter the movies array
         : movies; // if no genre is selected, return the original movies array
-    const paginatedMovies = paginate(filtered, currentPage, pagesize); // paginate the movies array
+    
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]); // sort the filtered array
+
+    const paginatedMovies = paginate(sorted, currentPage, pagesize); // paginate the movies array
     return (
       // return statement
       <div className="row">
@@ -71,10 +81,11 @@ class Movies extends Component {
         </div>
         <div className="col">
           <p>Showing {filtered.length} movies in the database.</p>
-          <MoviesTable // MoviesTable component with movies, onDelete, and onLike props 
+          <MoviesTable // MoviesTable component with movies, onDelete, and onLike props
             movies={paginatedMovies}
             onDelete={this.handleDelete}
             onLike={this.handleLike}
+            onSort={this.handleSort}
           />
           <Pagination
             itemsCount={filtered.length}
