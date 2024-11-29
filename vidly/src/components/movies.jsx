@@ -55,21 +55,36 @@ class Movies extends Component {
     this.setState({ sortColumn }); // update the sortColumn property of the state object
   };
 
+  getPagedData = () => {  
+    // getPagedData method
+    const {
+      movies: allMovies,
+      currentPage,
+      pagesize,
+      selectedGenre,
+      sortColumn,
+    } = this.state; // object destructuring to extract movies, currentPage, pagesize, selectedGenre, and sortColumn from the state object 
+
+    const filtered = selectedGenre && selectedGenre._id // if selectedGenre is truthy and selectedGenre._id is truthy
+      ? allMovies.filter((m) => m.genre._id === selectedGenre._id) // filter the movies array based on the selected genre
+      : allMovies; // otherwise, return all movies
+
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]); // sort the filtered array based on the sortColumn.path and sortColumn.order properties
+
+    const movies = paginate(sorted, currentPage, pagesize); // paginate the sorted array based on the currentPage and pagesize properties
+
+    return { totalCount: filtered.length, data: movies }; // return an object with the totalCount and data properties
+  };
   render() {
     // render method
     const { length: count } = this.state.movies; // object destructuring to extract the length property of the movies array and store it in a variable called count
     if (count === 0) return <p>There are no movies in the database.</p>; // if the count property is 0, return a paragraph element with a message
 
     const { movies } = this.state; // extract movies from state
-    const { currentPage, pagesize, selectedGenre, sortColumn} = this.state; // extract currentPage and pagesize from state
-    const filtered =
-      selectedGenre && selectedGenre._id // filter the movies array based on the selected genre
-        ? movies.filter((m) => m.genre._id === selectedGenre._id) // if a genre is selected, filter the movies array
-        : movies; // if no genre is selected, return the original movies array
-    
-    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]); // sort the filtered array
+    const { currentPage, pagesize, sortColumn} = this.state; // extract currentPage and pagesize from state
 
-    const paginatedMovies = paginate(sorted, currentPage, pagesize); // paginate the movies array
+    const { totalCount, data: paginatedMovies } = this.getPagedData(); // extract totalCount and data from getPagedData method
+    
     return (
       // return statement
       <div className="row">
@@ -83,7 +98,7 @@ class Movies extends Component {
           />
         </div>
         <div className="col">
-          <p>Showing {filtered.length} movies in the database.</p>
+          <p>Showing {totalCount} movies in the database.</p>
           <MoviesTable // MoviesTable component with movies, onDelete, and onLike props
             movies={paginatedMovies}
             sortColumn={sortColumn}
@@ -92,7 +107,7 @@ class Movies extends Component {
             onSort={this.handleSort}
           />
           <Pagination
-            itemsCount={filtered.length}
+            itemsCount={totalCount}
             pageSize={pagesize}
             currentPage={currentPage}
             onPageChange={this.handlePageChange}
