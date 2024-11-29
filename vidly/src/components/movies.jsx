@@ -51,11 +51,11 @@ class Movies extends Component {
 
   handleSort = (sortColumn) => {
     // handleSort method
-    
+
     this.setState({ sortColumn }); // update the sortColumn property of the state object
   };
 
-  getPagedData = () => {  
+  getPagedData = () => {
     // getPagedData method
     const {
       movies: allMovies,
@@ -63,11 +63,12 @@ class Movies extends Component {
       pagesize,
       selectedGenre,
       sortColumn,
-    } = this.state; // object destructuring to extract movies, currentPage, pagesize, selectedGenre, and sortColumn from the state object 
+    } = this.state; // object destructuring to extract movies, currentPage, pagesize, selectedGenre, and sortColumn from the state object
 
-    const filtered = selectedGenre && selectedGenre._id // if selectedGenre is truthy and selectedGenre._id is truthy
-      ? allMovies.filter((m) => m.genre._id === selectedGenre._id) // filter the movies array based on the selected genre
-      : allMovies; // otherwise, return all movies
+    const filtered =
+      selectedGenre && selectedGenre._id // if selectedGenre is truthy and selectedGenre._id is truthy
+        ? allMovies.filter((m) => m.genre._id === selectedGenre._id) // filter the movies array based on the selected genre
+        : allMovies; // otherwise, return all movies
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]); // sort the filtered array based on the sortColumn.path and sortColumn.order properties
 
@@ -80,11 +81,10 @@ class Movies extends Component {
     const { length: count } = this.state.movies; // object destructuring to extract the length property of the movies array and store it in a variable called count
     if (count === 0) return <p>There are no movies in the database.</p>; // if the count property is 0, return a paragraph element with a message
 
-    const { movies } = this.state; // extract movies from state
-    const { currentPage, pagesize, sortColumn} = this.state; // extract currentPage and pagesize from state
+    const { currentPage, pagesize, sortColumn } = this.state; // extract currentPage and pagesize from state
 
     const { totalCount, data: paginatedMovies } = this.getPagedData(); // extract totalCount and data from getPagedData method
-    
+
     return (
       // return statement
       <div className="row">
