@@ -1,26 +1,23 @@
 import React, { Component } from "react";
+import { Route, Navigate, Routes, BrowserRouter } from "react-router-dom";
 import Movies from "./components/movies";
 import Customers from "./components/customers";
 import Rentals from "./components/rentals";
 import NotFound from "./components/notFound";
 import NavBar from "./components/navBar";
 import MovieForm from "./components/movieForm";
-import { Route, Navigate, Routes, BrowserRouter } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "font-awesome/css/font-awesome.css";
+import LoginForm from "./components/loginForm";
 import "./App.css";
 
 class App extends Component {
   render() {
     return (
-
       <React.Fragment>
-
         <NavBar />
         <main className="container">
-          
           <Routes>
-              <Route path="/movie/:id" element={<MovieForm />} />
+            <Route path="/movie/:id" element={<MovieForm />} />
+            <Route path="/login" element={<LoginForm />} />
             <Route path="/movies" element={<Movies />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/rentals" element={<Rentals />} />
