@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 
 class LoginForm extends Component {
-  state = {};
+  state = {
+    account: { username: "", password: "" },
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -17,7 +19,7 @@ class LoginForm extends Component {
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label htmlFor="username">Username</label>
-            <input id="username" type="text" className="form-control" />
+            <input value={this.state.account.username} id="username" type="text" className="form-control" />
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
