@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Navigate, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Navigate, Routes } from "react-router-dom";
 import Movies from "./components/movies";
 import Customers from "./components/customers";
 import Rentals from "./components/rentals";
