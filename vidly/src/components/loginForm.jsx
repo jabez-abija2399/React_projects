@@ -6,10 +6,18 @@ class LoginForm extends Component {
   };
 
   handleSubmit = (e) => {
-    e.preventDefault();
+    // Event handler
+    e.preventDefault(); // Prevent the default behavior of the form
 
     // Call the server
     console.log("Submitted");
+  };
+
+  handleChange = ({ currentTarget: input }) => {
+    // Destructure the event object
+    const account = { ...this.state.account }; // Clone the state
+    account[input.name] = input.value; // Update the state
+    this.setState({ account }); // Set the state
   };
 
   render() {
@@ -17,15 +25,33 @@ class LoginForm extends Component {
       <div>
         <h1>Login</h1>
         <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input onChange={this.handleChange} value={this.state.account.username} id="username" type="text" className="form-control" />
+          <div className="mb-3">
+            <label htmlFor="username" className="form-label">
+              Username
+            </label>
+            <input
+              value={this.state.account.username}
+              onChange={this.handleChange}
+              name="username"
+              id="username"
+              type="text"
+              className="form-control"
+            />
           </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input id="password" type="text" className="form-control" />
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+            <input
+              value={this.state.account.password}
+              onChange={this.handleChange}
+              name="password"
+              id="password"
+              type="password"
+              className="form-control"
+            />
           </div>
-          <button className="btn btn-primary m-2">Login</button>
+          <button className="btn btn-primary">Login</button>
         </form>
       </div>
     );
