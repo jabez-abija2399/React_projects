@@ -21,6 +21,9 @@ class LoginForm extends Component {
   };
 
   render() {
+    
+    const { account } = this.state; // Destructure the state
+
     return (
       <div>
         <h1>Login</h1>
@@ -30,7 +33,7 @@ class LoginForm extends Component {
               Username
             </label>
             <input
-              value={this.state.account.username}
+              value={account.username}
               onChange={this.handleChange}
               name="username"
               id="username"
@@ -43,7 +46,7 @@ class LoginForm extends Component {
               Password
             </label>
             <input
-              value={this.state.account.password}
+              value={account.password}
               onChange={this.handleChange}
               name="password"
               id="password"
