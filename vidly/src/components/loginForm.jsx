@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import Joi, { options } from "joi-browser";
 import Input from "./comman/input";
+import { result } from "lodash";
 
 class LoginForm extends Component {
   state = {
@@ -7,16 +9,19 @@ class LoginForm extends Component {
     errors: {},
   };
 
+  schema = {
+    username: Joi.string().required().label("Username"),
+    password: Joi.string().required().label("Password"),
+  };
+
   validate = () => {
+    const option = { abortEarly: false };
+    const { error } = Joi.validate(this.state.account, this.schema, option);
+    if (error) return;
+
     const errors = {};
-
-    if (this.state.account.username.trim() === "")
-      errors.username = "UserName is required";
-
-    if (this.state.account.password.trim() === "")
-      errors.password = "Password is required";
-
-    return Object.keys(errors).length === 0 ? null : errors;
+    for (let item of result.error.details) errors[item.path[0]] = item.messsage;
+    return errors;
   };
 
   handleSubmit = (e) => {
@@ -24,8 +29,6 @@ class LoginForm extends Component {
     e.preventDefault(); // Prevent the default behavior of the form
 
     const errors = this.validate();
-    console.log(errors);
-
     this.setState({ errors: errors || {} });
     if (errors) return;
 
