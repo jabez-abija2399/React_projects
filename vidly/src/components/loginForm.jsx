@@ -4,11 +4,16 @@ import Input from "./comman/input";
 class LoginForm extends Component {
   state = {
     account: { username: "", password: "" },
+    errors: {},
   };
 
   handleSubmit = (e) => {
     // Event handler
     e.preventDefault(); // Prevent the default behavior of the form
+
+    const errors = this.validate();
+    this.setState({ errors: errors || {} });
+    if (errors) return;
 
     // Call the server
     console.log("Submitted");
