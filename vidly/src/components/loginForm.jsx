@@ -7,13 +7,25 @@ class LoginForm extends Component {
     errors: {},
   };
 
-  validate
+  validate = () => {
+    const errors = {};
+
+    if (this.state.account.username.trim() === "")
+      errors.username = "UserName is required";
+
+    if (this.state.account.password.trim() === "")
+      errors.password = "Password is required";
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
 
   handleSubmit = (e) => {
     // Event handler
     e.preventDefault(); // Prevent the default behavior of the form
 
     const errors = this.validate();
+    console.log(errors);
+
     this.setState({ errors: errors || {} });
     if (errors) return;
 
@@ -21,15 +33,28 @@ class LoginForm extends Component {
     console.log("Submitted");
   };
 
-  handleChange = ({ currentTarget: input }) => {
-    // Destructure the event object
-    const account = { ...this.state.account }; // Clone the state
-    account[input.name] = input.value; // Update the state
-    this.setState({ account }); // Set the state
+  validateProperty = ({ name, value }) => {
+    if (name === "username") {
+      if (value.trim() === "") return "Username is required";
+    }
+    if (name === "password") {
+      if (value.trim() === "") return "Password is required";
+    }
   };
 
+  handleChange = ({ currentTarget: input }) => {
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(input);
+    if (errorMessage) errors[input.name] = errorMessage;
+    else delete errors[input.name];
+
+    const account = { ...this.state.account };
+    account[input.name] = input.value;
+
+    this.setState({ account, errors });
+  };
   render() {
-    const { account } = this.state; // Destructure the state
+    const { account, errors } = this.state; // Destructure the state
 
     return (
       <div>
@@ -40,6 +65,7 @@ class LoginForm extends Component {
             label="Username"
             value={account.username}
             onChange={this.handleChange}
+            error={errors.username}
           />
 
           <Input
@@ -47,6 +73,7 @@ class LoginForm extends Component {
             label="Password"
             value={account.password}
             onChange={this.handleChange}
+            error={errors.password}
           />
           <button className="btn btn-primary">Login</button>
         </form>
