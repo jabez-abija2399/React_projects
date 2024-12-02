@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Input from "./comman/input";
 
 class LoginForm extends Component {
   state = {
@@ -21,39 +22,25 @@ class LoginForm extends Component {
   };
 
   render() {
-    
     const { account } = this.state; // Destructure the state
 
     return (
       <div>
         <h1>Login</h1>
         <form onSubmit={this.handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="username" className="form-label">
-              Username
-            </label>
-            <input
-              value={account.username}
-              onChange={this.handleChange}
-              name="username"
-              id="username"
-              type="text"
-              className="form-control"
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              value={account.password}
-              onChange={this.handleChange}
-              name="password"
-              id="password"
-              type="password"
-              className="form-control"
-            />
-          </div>
+          <Input
+            name="username"
+            label="Username"
+            value={account.username}
+            onChange={this.handleChange}
+          />
+
+          <Input
+            name="password"
+            label="Password"
+            value={account.password}
+            onChange={this.handleChange}
+          />
           <button className="btn btn-primary">Login</button>
         </form>
       </div>
