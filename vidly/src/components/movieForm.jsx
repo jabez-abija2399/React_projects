@@ -1,15 +1,43 @@
 import React from "react";
-import { useParams } from "react-router-dom"; // Import useParams
+import Joi, { errors, schema } from "joi-browser";
+import Form from "./comman/form";
 
-const MovieForm = () => {
-  const { id } = useParams(); // Get the dynamic :id parameter from the URL
+class MoviesForm extends Form {
+  state = {
+    data: {
+      title: "",
+      genre: "",
+      numberInStock: "",
+      dailyRentalRate: "",
+    },
+    errors: {},
+  };
 
-  return (
-    <div>
-      <h1>Movie Form {id}</h1>
-      <button className="btn btn-primary" >Save</button>
-    </div>
-  );
-};
+  schema = {
+    title: Joi.string().required().label("Title"),
+    genre: Joi.string().required().label("Genre"),
+    numberInStock: Joi.number().required().label("Number In Stock"),
+    dailyRentalRate: Joi.number().required().label("Daily Rental Rate"),
+  };
+  doSubmit = () => {
+    // Call the server
+    console.log("saved");
+  };
 
-export default MovieForm;
+  render() {
+    return (
+      <div>
+        <h1>Movie Form</h1>
+        <form onSubmit={this.handleSubmit}>
+          {this.renderInput("title", "Title")}
+          {this.renderInput("genre", "Genre", this.state.genres)}
+          {this.renderInput("numberInStock", "Number In Stock")}
+          {this.renderInput("dailyRentalRate", "Daily Rental Rate")}
+          {this.renderButton("Save")}
+        </form>
+      </div>
+    );
+  }
+}
+
+export default MoviesForm;
