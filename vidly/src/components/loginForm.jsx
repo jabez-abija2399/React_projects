@@ -7,6 +7,8 @@ class LoginForm extends Component {
     errors: {},
   };
 
+  validate
+
   handleSubmit = (e) => {
     // Event handler
     e.preventDefault(); // Prevent the default behavior of the form
