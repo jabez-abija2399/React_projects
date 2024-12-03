@@ -1,75 +1,100 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
+import Select from "./select";
 
-class Form extends Component {
-  state = {
-    data: {},
-    errors: {},
-  };
+const Form = ({ schema, doSubmit, children }) => {
+  const [data, setData] = useState({});
+  const [errors, setErrors] = useState({});
 
-  validate = () => {
-    const options = { abortEarly: false }; // To collect all validation errors
-    const { error } = Joi.validate(this.state.data, this.schema, options);
-
+  const validate = () => {
+    const options = { abortEarly: false };
+    const { error } = Joi.validate(data, schema, options);
     if (!error) return null;
 
-    const errors = {};
-    for (let item of error.details) errors[item.path[0]] = item.message;
-    return errors;
+    const validationErrors = {};
+    error.details.forEach(item => {
+      validationErrors[item.path[0]] = item.message;
+    });
+    return validationErrors;
   };
 
-  validateProperty = ({ name, value }) => {
+  const validateProperty = ({ name, value }) => {
     const obj = { [name]: value };
-    const schema = { [name]: this.schema[name] };
-    const { error } = Joi.validate(obj, schema);
-    return error ? error.details[0].message : null; // Correct the typo here
+    const propSchema = { [name]: schema[name] };
+    const { error } = Joi.validate(obj, propSchema);
+    return error ? error.details[0].message : null;
   };
 
-  handleChange = ({ currentTarget: input }) => {
-    const errors = { ...this.state.errors };
-    const errorMessage = this.validateProperty(input);
-    if (errorMessage) errors[input.name] = errorMessage;
-    else delete errors[input.name];
+  const handleChange = ({ currentTarget: input }) => {
+    const newErrors = { ...errors };
+    const errorMessage = validateProperty(input);
+    if (errorMessage) newErrors[input.name] = errorMessage;
+    else delete newErrors[input.name];
 
-    const data = { ...this.state.data };
-    data[input.name] = input.value;
+    const newData = { ...data };
+    newData[input.name] = input.value;
 
-    this.setState({ data, errors });
+    setData(newData);
+    setErrors(newErrors);
   };
 
-  handleSubmit = (e) => {
-    // Event handler
-    e.preventDefault(); // Prevent the default behavior of the form
-
-    const errors = this.validate();
-    this.setState({ errors: errors || {} });
-    if (errors) return;
-
-    this.doSubmit();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    const validationErrors = validate();
+    setErrors(validationErrors || {});
+    if (validationErrors) {
+      console.log("Validation Errors: ", validationErrors);
+      return;
+    }
+  
+    console.log("Form is valid. Submitting...");
+    console.log("Form data:", data); // Check if data is being submitted correctly
+    doSubmit();
   };
+  
+  
 
-  renderButton(lable) {
+  const renderButton = (label) => {
     return (
-      <button disabled={this.validate()} className="btn btn-primary">
-        {lable}
+      <button disabled={validate()} className="btn btn-primary">
+        {label}
       </button>
     );
-  }
-  renderInput(name, lable, type = 'text') {
-    const { data, errors } = this.state; // Destructure the state
+  };
 
+  const renderSelect = (name, label, options) => {
+    return (
+      <Select
+        name={name}
+        value={data[name]}
+        label={label}
+        options={options}
+        onChange={handleChange}
+        error={errors[name]}
+      />
+    );
+  };
+
+  const renderInput = (name, label, type = "text") => {
     return (
       <Input
         name={name}
-        label={lable}
+        label={label}
         value={data[name]}
-        onChange={this.handleChange}
+        onChange={handleChange}
         error={errors[name]}
         type={type}
       />
     );
-  }
-}
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {children({ renderInput, renderSelect, renderButton, data, errors })}
+    </form>
+  );
+};
 
 export default Form;
