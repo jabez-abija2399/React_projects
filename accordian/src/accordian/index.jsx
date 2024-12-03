@@ -24,7 +24,7 @@ const Accordian = () => {
     <div className="d-flex justify-content-center align-items-center vh-100  ">
       <div className="accordion w-50 " id="accordionExample">
         <button
-          className="btn btn-secondary active"
+          className={`btn ${enableMultiSelection ? "btn-danger" : "btn-success"} mb-3`}
           onClick={() => setEnableMultiSelection(!enableMultiSelection)}
         >
           {enableMultiSelection
