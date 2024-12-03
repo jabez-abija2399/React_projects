@@ -1,35 +1,35 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Joi from "joi-browser";
 import Form from "./comman/form";
 
-class LoginForm extends Form {
-  state = {
-    data: { username: "", password: "" },
-    errors: {},
-  };
+const LoginForm = () => {
+  const [data, setData] = useState({ username: "", password: "" });
+  const [errors, setErrors] = useState({});
 
-  schema = {
+  const schema = {
     username: Joi.string().required().label("Username"),
     password: Joi.string().required().label("Password"),
   };
 
-  doSubmit = () => {
+  const doSubmit = () => {
     // Call the server
     console.log("Submitted");
   };
 
-  render() {
-    return (
-      <div>
-        <h1>Login</h1>
-        <form onSubmit={this.handleSubmit}>
-          {this.renderInput("username", "Username")}
-          {this.renderInput("password", "Password", "password")}
-          {this.renderButton("Login")}
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <Form schema={schema} doSubmit={doSubmit}>
+      {({ renderInput, renderButton }) => (
+        <div>
+          <h1>Login</h1>
+          <form onSubmit={doSubmit}>
+            {renderInput("username", "Username")}
+            {renderInput("password", "Password", "password")}
+            {renderButton("Login")}
+          </form>
+        </div>
+      )}
+    </Form>
+  );
+};
 
 export default LoginForm;
