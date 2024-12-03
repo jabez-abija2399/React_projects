@@ -1,6 +1,6 @@
 .accordion-button {
-    background-color: #007bff; /* Default background */
-    color: white; /* Default text */
+    background-color: #00f7ff; /* Default background */
+  
   }
   
   .accordion-button.collapsed {
@@ -13,8 +13,4 @@
     color: #333; /* Body text */
   }
 
-  .accordion {
-    background-color: #69aef3; /* Light grey background */
-    border-radius: 8px;
-    padding: 20px;
-  }
+  
