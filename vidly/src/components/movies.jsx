@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { getMovies } from "../services/fakeMovieService"; 
 import MoviesTable from "./moviesTable";  // import MoviesTable component from the moviesTable module  
 import Pagination from "./comman/pagination";
@@ -98,6 +99,7 @@ class Movies extends Component {
           />
         </div>
         <div className="col">
+          <Link className="btn btn-primary" to={'/new/movie'}>New Movie</Link>
           <p>Showing {totalCount} movies in the database.</p>
           <MoviesTable // MoviesTable component with movies, onDelete, and onLike props
             movies={paginatedMovies}
