@@ -3,7 +3,6 @@ import data from "./data";
 import "./style.css";
 
 const Accordian = () => {
-  const [selected, setSelected] = useState(null);
   const [enableMultiSelection, setEnableMultiSelection] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -12,19 +11,20 @@ const Accordian = () => {
   };
 
   const handleMultiSelection = (id) => {
-    if (selectedItems.includes(id)) {
-      setSelectedItems(selectedItems.filter((item) => item !== id));
-    } else {
-      setSelectedItems([...selectedItems, id]);
-    }
-    console.log(selectedItems);
+    setSelectedItems(
+      selectedItems.includes(id)
+        ? selectedItems.filter((item) => item !== id)
+        : [...selectedItems, id]
+    );
   };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100  ">
       <div className="accordion w-50 " id="accordionExample">
         <button
-          className={`btn ${enableMultiSelection ? "btn-danger" : "btn-success"} mb-3`}
+          className={`btn ${
+            enableMultiSelection ? "btn-danger" : "btn-success"
+          } mb-3`}
           onClick={() => setEnableMultiSelection(!enableMultiSelection)}
         >
           {enableMultiSelection
@@ -44,10 +44,14 @@ const Accordian = () => {
                     ? () => handleMultiSelection(item.id)
                     : () => handleSingleSelection(item.id)
                 }
-                aria-expanded={selectedItems.includes(item.id) ? "true" : "false"}
+                aria-expanded={
+                  selectedItems.includes(item.id) ? "true" : "false"
+                }
                 aria-controls={`collapse${item.id}`}
                 style={{
-                  backgroundColor: selectedItems.includes(item.id) ? "#007bff" : "#00f7ff", // Active and inactive background
+                  backgroundColor: selectedItems.includes(item.id)
+                    ? "#007bff"
+                    : "#00f7ff", // Active and inactive background
                   color: selectedItems.includes(item.id) ? "#fff" : "#000", // Active and inactive text color
                 }}
               >
