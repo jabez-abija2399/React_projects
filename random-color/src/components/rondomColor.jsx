@@ -22,7 +22,7 @@ const RandomColor = () => {
   };
 
  const handleButton = () => {
-    {colorType === "rgbColor" ? handleHexRandom() : handleRgbRandom()}
+    {colorType === hexColor ? handleHexRandom() : handleRgbRandom()}
 
 
   };
