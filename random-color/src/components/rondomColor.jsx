@@ -32,6 +32,9 @@ const RandomColor = () => {
     } else {
       handleRgbRandom();
     }
+
+    // colorType === hex ? handleHexRandom : handleRgbRandom
+
   };
 
   return (
