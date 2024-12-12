@@ -25,7 +25,12 @@ const Accordian = () => {
           className={`btn ${
             enableMultiSelection ? "btn-danger" : "btn-success"
           } mb-3`}
-          onClick={() => setEnableMultiSelection(!enableMultiSelection)}
+          onClick={() => {
+            if (enableMultiSelection) {
+              setSelectedItems([]);
+            }
+            setEnableMultiSelection(!enableMultiSelection);
+          }}
         >
           {enableMultiSelection
             ? "Disable Multi-Selection"
